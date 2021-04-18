@@ -1,16 +1,13 @@
 import { Component } from "react";
-
+import { connect } from "react-redux";
+import action from "../redux/phoneBook/phoneBook-action";
 import contactUsersStyles from "./contactUsersStyles";
 
 const { H2, Ul, Li, Name, Button } = contactUsersStyles;
 
-export default class ContactUsers extends Component {
-  static propTypes = {};
-
-  static defaultProps = {};
-
-  filterContact = (contents, filter) => {
-    return contents.filter(
+class ContactUsers extends Component {
+  filterContact = (content, filter) => {
+    return content.filter(
       ({ name }) => !name.toLowerCase().indexOf(filter.toLowerCase())
     );
   };
@@ -37,3 +34,15 @@ export default class ContactUsers extends Component {
     );
   }
 }
+const mapStateToProps = (state) => {
+  return {
+    contacts: state.phoneBook.contacts,
+    filter: state.phoneBook.filter,
+  };
+};
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onRemoveContact: (id) => dispatch(action.removeContact(id)),
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(ContactUsers);

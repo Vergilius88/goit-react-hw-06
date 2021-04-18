@@ -1,23 +1,25 @@
-import { Component } from "react";
+import { connect } from "react-redux";
 
-export default class Filter extends Component {
-  static propTypes = {};
+import action from "../redux/phoneBook/phoneBook-action";
 
-  static defaultProps = {};
+const Filter = ({ onChange }) => {
+  return (
+    <label>
+      Search contacts by name
+      <input
+        type="text"
+        placeholder="Enter your search data."
+        name="filter"
+        onChange={onChange}
+      />
+    </label>
+  );
+};
 
-  render() {
-    const { onChange } = this.props;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onChange: (e) => dispatch(action.findContact(e.target.value)),
+  };
+};
 
-    return (
-      <label>
-        Search contacts by name
-        <input
-          type="text"
-          placeholder="Enter your search data."
-          name="filter"
-          onChange={onChange}
-        />
-      </label>
-    );
-  }
-}
+export default connect(null, mapDispatchToProps)(Filter);

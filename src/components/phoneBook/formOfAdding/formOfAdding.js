@@ -1,4 +1,6 @@
 import { Component } from "react";
+import action from "../redux/phoneBook/phoneBook-action";
+import { connect } from "react-redux";
 
 import formOfAddingStyles from "./formOfAddingStyles";
 const { Button } = formOfAddingStyles;
@@ -8,11 +10,7 @@ const INITIAL_STATE = {
   number: "",
 };
 
-export default class formOfAdding extends Component {
-  static propTypes = {};
-
-  static defaultProps = {};
-
+class formOfAdding extends Component {
   state = { ...INITIAL_STATE };
 
   handleChange = ({ target }) => {
@@ -26,10 +24,9 @@ export default class formOfAdding extends Component {
   };
   handleSubmit = (e) => {
     e.preventDefault();
-    const { name, number } = this.state;
+    const value = this.state;
     const { onAddContact } = this.props;
-
-    onAddContact({ name, number });
+    onAddContact(value);
     alert("Форма отправлена ");
     this.reset();
   };
@@ -76,3 +73,10 @@ export default class formOfAdding extends Component {
     );
   }
 }
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onAddContact: (value) => dispatch(action.addContact(value)),
+  };
+};
+export default connect(null, mapDispatchToProps)(formOfAdding);
